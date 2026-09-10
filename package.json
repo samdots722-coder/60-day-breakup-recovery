@@ -1,0 +1,14 @@
+{
+  "name": "60-day-breakup-recovery",
+  "version": "1.0.0",
+  "description": "A 60-day breakup recovery app with daily check-ins, streaks, and healing resources",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node index.ts",
+    "dev": "node index.ts"
+  },
+  "keywords": ["breakup", "recovery", "wellness", "mental-health"],
+  "author": "Your Name",
+  "license": "MIT"
+}

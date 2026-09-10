@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>60-Day Breakup Recovery</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .header h1 {
+      color: #667eea;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      background: #f0f0f0;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.3s;
+    }
+
+    .streaks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .streak-card {
+      background: #f8f9ff;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .streak-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .streak-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .streak-fire {
+      font-size: 20px;
+    }
+
+    .checkin-card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .checkin-card h2 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .exercise-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .exercise-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .exercise-title {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .custom-checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #667eea;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .custom-checkbox.checked {
+      background: #667eea;
+    }
+
+    .custom-checkbox.checked::after {
+      content: '✓';
+      color: white;
+      font-weight: bold;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover,
+    .option-btn.selected {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+
+    .video-section {
+      margin-top: 15px;
+      padding: 15px;
+      background: #f8f9ff;
+      border-radius: 12px;
+    }
+
+    .video-section h3 {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .video-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .video-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+
+    .video-item:hover {
+      background: #e8e9ff;
+    }
+
+    .video-icon {
+      font-size: 20px;
+    }
+
+    .questions-area {
+      margin-top: 10px;
+    }
+
+    .question-item {
+      margin-bottom: 15px;
+    }
+
+    .question-label {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .question-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: scale(1.02);
+    }
+
+    .social-frequency {
+      background: #f8f9ff;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .frequency-bar {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .frequency-day {
+      flex: 1;
+      height: 30px;
+      background: #e0e0e0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .frequency-day.done {
+      background: #667eea;
+      color: white;
+    }
+
+    .resources-section {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .resources-section h2 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .resource-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .resource-item {
+      padding: 12px;
+      background: #f8f9ff;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #667eea;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .resource-item:hover {
+      background: #e8e9ff;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🌱 60-Day Recovery Journey</h1>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div style="text-align: center; color: #666; font-size: 14px;">
+        Day <span id="currentDay">1</span> of 60
+      </div>
+
+      <!-- Streaks -->
+      <div class="streaks">
+        <div class="streak-card">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-number" id="physicalStreak">0</div>
+          <div class="streak-label">Physical</div>
+        </div>
+        <div class="streak-card">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-number" id="breathingStreak">0</div>
+          <div class="streak-label">Breathing</div>
+        </div>
+        <div class="streak-card">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-number" id="mentalStreak">0</div>
+          <div class="streak-label">Mental</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Check-in -->
+    <div class="checkin-card">
+      <h2>📝 Daily Check-in</h2>
+
+      <!-- Physical Exercise -->
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">💪 Physical Exercise (20 min)</span>
+          <div class="checkbox-wrapper">
+            <div class="custom-checkbox" id="physicalCheck" onclick="toggleCheck('physical')"></div>
+            <span style="font-size: 13px; color: #666;">Done</span>
+          </div>
+        </div>
+        <div id="physicalOptions" class="options-grid hidden">
+          <button class="option-btn" onclick="selectOption('physical', 'Walk')">🚶 Walk</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Yoga')">🧘 Yoga</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Cardio')">🏃 Cardio</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Gym')">🏋️ Gym</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Sport')">⚽ Sport</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Pilates')">🤸 Pilates</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Dance')">💃 Dance</button>
+          <button class="option-btn" onclick="selectOption('physical', 'Other')">📝 Other</button>
+        </div>
+        <div id="physicalOther" class="hidden" style="margin-top: 10px;">
+          <input type="text" class="question-input" placeholder="What did you do?" id="physicalOtherInput">
+        </div>
+        
+        <!-- Video Recommendations -->
+        <div class="video-section">
+          <h3>🎥 Recommended Workouts (YouTube)</h3>
+          <div class="video-list">
+            <a href="https://youtu.be/g_tea80kTh8" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>10-min Morning Yoga</span>
+            </a>
+            <a href="https://youtu.be/ml6cT4AZdqI" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>15-min Cardio Workout</span>
+            </a>
+            <a href="https://youtu.be/UBMk3Qrjy6o" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>20-min Full Body HIIT</span>
+            </a>
+            <a href="https://youtu.be/oAP62s35tL4" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>12-min Pilates Core</span>
+            </a>
+            <a href="https://youtu.be/DHD1-2P94NA" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>5-min Stretching Routine</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breathing Exercise -->
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">🌬️ Breathing Exercise (10 min)</span>
+          <div class="checkbox-wrapper">
+            <div class="custom-checkbox" id="breathingCheck" onclick="toggleCheck('breathing')"></div>
+            <span style="font-size: 13px; color: #666;">Done</span>
+          </div>
+        </div>
+        <div id="breathingOptions" class="options-grid hidden">
+          <button class="option-btn" onclick="selectOption('breathing', 'Breathing')">🌬️ Breathing</button>
+          <button class="option-btn" onclick="selectOption('breathing', 'Meditation')">🧘 Meditation</button>
+          <button class="option-btn" onclick="selectOption('breathing', 'Pranayama')">🕉️ Pranayama</button>
+          <button class="option-btn" onclick="selectOption('breathing', 'Both')">✨ Both</button>
+        </div>
+        
+        <!-- Video Recommendations -->
+        <div class="video-section">
+          <h3>🎥 Recommended Breathing (YouTube)</h3>
+          <div class="video-list">
+            <a href="https://youtu.be/ZToicYcHIOU" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>5-min Box Breathing</span>
+            </a>
+            <a href="https://youtu.be/inpok6MKVbc" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>10-min Guided Meditation</span>
+            </a>
+            <a href="https://youtu.be/gLtN2lqcZBI" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>15-min Pranayama for Beginners</span>
+            </a>
+            <a href="https://youtu.be/SEsH8SxZs4M" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>7-min Deep Breathing Exercise</span>
+            </a>
+            <a href="https://youtu.be/z6Xq0cVwJzE" target="_blank" class="video-item">
+              <span class="video-icon">🎬</span>
+              <span>20-min Body Scan Meditation</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mental Exercise -->
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">🧠 Mental Exercise (3 Questions)</span>
+          <div class="checkbox-wrapper">
+            <div class="custom-checkbox" id="mentalCheck" onclick="toggleCheck('mental')"></div>
+            <span style="font-size: 13px; color: #666;">Done</span>
+          </div>
+        </div>
+        <div id="mentalQuestions" class="questions-area hidden">
+          <div class="question-item">
+            <label class="question-label">1. What are you grateful for today?</label>
+            <textarea class="question-input" rows="2" id="gratefulInput" placeholder="3 things..."></textarea>
+          </div>
+          <div class="question-item">
+            <label class="question-label">2. What was your win today?</label>
+            <textarea class="question-input" rows="2" id="winInput" placeholder="One achievement..."></textarea>
+          </div>
+          <div class="question-item">
+            <label class="question-label">3. What will you improve tomorrow?</label>
+            <textarea class="question-input" rows="2" id="improveInput" placeholder="One thing to work on..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Activity -->
+      <div class="exercise-item">
+        <div class="exercise-header">
+          <span class="exercise-title">👥 Social Activity (Optional)</span>
+        </div>
+        <div class="checkbox-wrapper" style="margin-bottom: 10px;">
+          <div class="custom-checkbox" id="socialCheck" onclick="toggleCheck('social')"></div>
+          <span style="font-size: 13px; color: #666;">Did something social today</span>
+        </div>
+        <div id="socialOptions" class="options-grid hidden">
+          <button class="option-btn" onclick="selectOption('social', 'Texted a friend')">💬 Texted a friend</button>
+          <button class="option-btn" onclick="selectOption('social', 'Watched a movie')">🎬 Watched a movie</button>
+          <button class="option-btn" onclick="selectOption('social', 'Sat in a park')">🌳 Sat in a park</button>
+          <button class="option-btn" onclick="selectOption('social', 'Pet an animal')">🐾 Pet an animal</button>
+          <button class="option-btn" onclick="selectOption('social', 'Did a hobby')">🎨 Did a hobby</button>
+          <button class="option-btn" onclick="selectOption('social', 'Went out')">🚶 Went out</button>
+          <button class="option-btn" onclick="selectOption('social', 'Called family')">📞 Called family</button>
+          <button class="option-btn" onclick="selectOption('social', 'Other')">📝 Other</button>
+        </div>
+        <div id="socialOther" class="hidden" style="margin-top: 10px;">
+          <input type="text" class="question-input" placeholder="What did you do?" id="socialOtherInput">
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="submit-btn" onclick="submitCheckin()">Submit Check-in</button>
+
+      <!-- Social Frequency -->
+      <div class="social-frequency">
+        <div style="font-weight: 600; color: #333; margin-bottom: 10px;">📊 Social This Week</div>
+        <div class="frequency-bar" id="frequencyBar">
+          <div class="frequency-day">M</div>
+          <div class="frequency-day">T</div>
+          <div class="frequency-day">W</div>
+          <div class="frequency-day">T</div>
+          <div class="frequency-day">F</div>
+          <div class="frequency-day">S</div>
+          <div class="frequency-day">S</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section">
+      <h2>📚 Healing Resources</h2>
+      <div class="resource-list">
+        <a href="https://youtube.com/results?search_query=breakup+healing+meditation" target="_blank" class="resource-item">
+          🎥 Healing Meditations (YouTube)
+        </a>
+        <a href="https://youtube.com/results?search_query=moving+on+after+breakup" target="_blank" class="resource-item">
+          🎥 Moving On Tips (YouTube)
+        </a>
+        <a href="https://youtube.com/results?search_query=self+love+after+breakup" target="_blank" class="resource-item">
+          🎥 Self-Love Journey (YouTube)
+        </a>
+        <a href="#" class="resource-item">
+          📖 Articles (Coming Soon)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    const state = {
+      physical: { done: false, activity: '' },
+      breathing: { done: false, activity: '' },
+      mental: { done: false, answers: {} },
+      social: { done: false, activity: '' },
+    };
+
+    // Toggle checkbox
+    function toggleCheck(type) {
+      state[type].done = !state[type].done;
+      document.getElementById(`${type}Check`).classList.toggle('checked', state[type].done);
+      
+      if (type !== 'social') {
+        document.getElementById(`${type}Options`).classList.toggle('hidden', !state[type].done);
+        if (type === 'mental') {
+          document.getElementById('mentalQuestions').classList.toggle('hidden', !state[type].done);
+        }
+      } else {
+        document.getElementById('socialOptions').classList.toggle('hidden', !state[type].done);
+      }
+    }
+
+    // Select option
+    function selectOption(type, value) {
+      state[type].activity = value;
+      
+      const buttons = document.querySelectorAll(`#${type}Options .option-btn`);
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      
+      event.target.classList.add('selected');
+
+      if (value === 'Other') {
+        document.getElementById(`${type}Other`).classList.remove('hidden');
+      } else {
+        document.getElementById(`${type}Other`).classList.add('hidden');
+      }
+    }
+
+    // Submit check-in
+    function submitCheckin() {
+      if (state.physical.activity === 'Other') {
+        state.physical.activity = document.getElementById('physicalOtherInput').value;
+      }
+      if (state.social.activity === 'Other') {
+        state.social.activity = document.getElementById('socialOtherInput').value;
+      }
+
+      state.mental.answers = {
+        grateful: document.getElementById('gratefulInput').value,
+        win: document.getElementById('winInput').value,
+        improve: document.getElementById('improveInput').value,
+      };
+
+      if (state.physical.done && !state.physical.activity) {
+        alert('Please select or enter your physical activity!');
+        return;
+      }
+      if (state.breathing.done && !state.breathing.activity) {
+        alert('Please select your breathing activity!');
+        return;
+      }
+      if (state.mental.done && (!state.mental.answers.grateful || !state.mental.answers.win || !state.mental.answers.improve)) {
+        alert('Please answer all 3 mental questions!');
+        return;
+      }
+
+      alert('✅ Check-in submitted! Keep going! 💪\n\n(This is a demo. Backend will save your data.)');
+      
+      if (state.physical.done) {
+        const current = parseInt(document.getElementById('physicalStreak').textContent);
+        document.getElementById('physicalStreak').textContent = current + 1;
+      }
+      if (state.breathing.done) {
+        const current = parseInt(document.getElementById('breathingStreak').textContent);
+        document.getElementById('breathingStreak').textContent = current + 1;
+      }
+      if (state.mental.done) {
+        const current = parseInt(document.getElementById('mentalStreak').textContent);
+        document.getElementById('mentalStreak').textContent = current + 1;
+      }
+
+      const currentDay = parseInt(document.getElementById('currentDay').textContent);
+      if (currentDay < 60) {
+        document.getElementById('currentDay').textContent = currentDay + 1;
+        document.getElementById('progressFill').style.width = ((currentDay + 1) / 60 * 100) + '%';
+      }
+
+      resetForm();
+    }
+
+    // Reset form
+    function resetForm() {
+      state.physical = { done: false, activity: '' };
+      state.breathing = { done: false, activity: '' };
+      state.mental = { done: false, answers: {} };
+      state.social = { done: false, activity: '' };
+
+      document.getElementById('physicalCheck').classList.remove('checked');
+      document.getElementById('breathingCheck').classList.remove('checked');
+      document.getElementById('mentalCheck').classList.remove('checked');
+      document.getElementById('socialCheck').classList.remove('checked');
+
+      document.getElementById('physicalOptions').classList.add('hidden');
+      document.getElementById('breathingOptions').classList.add('hidden');
+      document.getElementById('mentalQuestions').classList.add('hidden');
+      document.getElementById('socialOptions').classList.add('hidden');
+
+      document.getElementById('gratefulInput').value = '';
+      document.getElementById('winInput').value = '';
+      document.getElementById('improveInput').value = '';
+    }
+  </script>
+</body>
+</html>
